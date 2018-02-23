@@ -1,4 +1,5 @@
 #include "elev.h"
+#include "statemachine.h"
 #include <stdio.h>
 
 
@@ -6,12 +7,10 @@ int main() {
     // Initialize hardware
     if (!elev_init()) {
         printf("Unable to initialize elevator hardware!\n");
-	printf("test");
         return 1;
     }
 	
 
-	
     printf("Press STOP button to stop elevator and exit program.\n");
 
     elev_set_motor_direction(DIRN_UP);
