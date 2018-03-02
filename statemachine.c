@@ -1,20 +1,27 @@
 #include "statemachine.h"
 #include "io.h"
+#include "timer.h"
+#include "queue.h"
 
 #include <stdlib.h>
 
- Mystate state = IDLE; 
+static Mystate state = IDLE; 
+static int current_dir = DIRN_STOP; 
+static int next_dir;
 
-void orders_in_queue(void){
+
+void orders_in_queue(){
 	switch(state){
 		case (IDLE):
 		//start motor & set direction
-		elev_set_motor_direction(elev_motor_direction_t dirn); 		//RETNING BESTEMMES
+		next_dir = get_next_dir(current_dir);	//RETNING BESTEMMES
+		current_dir = next_dir;
+		elev_set_motor_direction(current_dir); 		
 		//state = MOVING
 		state = MOVING;
 			break;
 
-		case (MOVING):
+		case (MOVING):s
 		//state = MOVING
 		state = MOVING;
 			break;
@@ -36,12 +43,14 @@ void arrive_floor_with_order(void){
 	switch(state){
 		case (IDLE):
 		//delete order
+		delete_item_in_queue(current_floor);
 		//update lights
 		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
 		elev_set_button_lamp(BUTTOn_COMMAND, current_floor, 0);
 		//door open - sett på timer - kjør timerfunksjon
 		elev_set_door_open_lamp(1);
+		timer_function_3sec();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;
 			break;
@@ -50,24 +59,28 @@ void arrive_floor_with_order(void){
 		//stop motor
 		elev_set_motor_direction(0);
 		//delete order
+		delete_item_in_queue(current_floor);
 		//update lights
 		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
 		elev_set_button_lamp(BUTTOn_COMMAND, current_floor, 0);
 		//door open - sett på timer - kjør timerfunksjon
 		elev_set_door_open_lamp(1);
+		timer_function_3sec();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;
 			break;
 
 		case (DOOR_OPEN):
 		//delete order
+		delete_item_in_queue(current_floor);
 		//update lights
 		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
 		elev_set_button_lamp(BUTTOn_COMMAND, current_floor, 0);
 		//door open - sett på timer
 		elev_set_door_open_lamp(1);
+		timer_function_3sec();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;	
 			break;
@@ -88,6 +101,7 @@ void emergency_stop(void){
 	//door open
 	elev_set_door_open_lamp(1);
 	//queue delete
+	clear_queue();
 	//update lights
 	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
@@ -101,7 +115,8 @@ void emergency_stop(void){
 	case (MOVING):
 	//stop motor
 	elev_set_motor_direction(0);
-	//queue delete	
+	//queue delete
+	clear_queue();	
 	//update lights
 	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
@@ -112,7 +127,8 @@ void emergency_stop(void){
 	state = EM_STOP;
 		break;
 	case (DOOR_OPEN):
-	//queue delete	
+	//queue delete
+	clear_queue();	
 	//update lights
 	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
@@ -157,6 +173,7 @@ void emergency_stop_released(void){
 		if(elev_get_floor_sensor_signal() != -1){
 			elev_set_door_open_lamp(1);
 			//kjør timer
+			timer_function_3sec();
 			state = DOOR_OPEN;
 		}
 		else{

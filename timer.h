@@ -3,8 +3,8 @@
 
 
 
-void timer_function_3sec(void);
-
+int timer_function_3sec(void);
+int get_timer_function(void)
 
 
 #endif // #ifndef __INCLUDE_IO_H__
