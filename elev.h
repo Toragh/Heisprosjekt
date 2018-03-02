@@ -6,8 +6,9 @@
 #define __INCLUDE_DRIVER_H__
 
 
-// Number of floors
+// Number of floors and buttons
 #define N_FLOORS 4
+#define N_BUTTONS 3
 
 
 
