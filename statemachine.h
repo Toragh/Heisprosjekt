@@ -9,4 +9,11 @@ typedef enum state
 	EM_STOP,
 }Mystate;
 
+void update_current_floor(void);
+void orders_in_queue(void);
+void arrive_floor_with_order(void);
+void emergency_stop(void);
+void emergency_stop_released(void);
+void time_out(void);
+
 #endif // #ifndef __INCLUDE_IO_H__

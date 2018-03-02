@@ -142,10 +142,28 @@ void update_queue(void)
         {
             if (elev_get_button_signal(j,i))
             {
-                order_matrix[i][j]= 1;
+                queue[i][j]= 1;
             }
         }
     }
 }
+
+
+bool should_stop(int current_floor, int current_dir){	
+	if(current_dir == DIRN_UP)
+	{
+		if(queue[current_floor][0] or queue[current_floor][2])
+			return true;
+	}
+	else if(current_dir == DIRN_DOWN)
+	{
+		if(queue[current_floor][1] or queue[current_floor][2])
+			return true;
+	}
+	return false;
+
+}
+
+
 
 
