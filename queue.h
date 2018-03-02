@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 
 /*
@@ -41,15 +42,15 @@ typedef struct Order {
  */
 
 
-void initialize_matrix(bool matrix[N_FLOORS][N_BUTTONS]);
-void delete_item_in_matrix(bool matrix[N_FLOORS][N_BUTTONS], int current_floor);
+void clear_queue(void);
+void delete_item_in_queue(int current_floor);
 //void check_matrix(bool matrix[N_FLOORS][N_BUTTONS]);
-bool get_order_below(bool matrix[N_FLOORS][N_BUTTONS]);
-bool get_order_above(bool matrix[N_FLOORS][N_BUTTONS]);
-void get_next_dir(bool matrix[N_FLOORS][N_BUTTONS]);
+bool get_order_below(int current_floor);
+bool get_order_above(int current_floor);
+void get_next_dir(int current_dir);
+bool check_orders(void); // returns false if matrix is empty
+void update_queue(void);
 
-
-void empty_matrix(bool matrix[N_FLOORS][N_BUTTONS]); // er ikke dette initialize?
 
 #endif // #ifndef __INCLUDE_DRIVER_H__
 
