@@ -1,7 +1,15 @@
 #include "elev.h"
+#include "queue.h"
 #include "statemachine.h"
 #include <stdio.h>
+#include <stdbool.h>
 
+#define N_BUTTONS 3
+/*
+HUSK Å DEFINERE DENNE ETTERPÅ!!
+int current_floor;
+int current_dir;
+*/
 
 int main() {
     // Initialize hardware
@@ -12,6 +20,10 @@ int main() {
 	
 
     printf("Press STOP button to stop elevator and exit program.\n");
+    
+    bool order_matrix[N_FLOORS][N_BUTTONS];
+    initialize_matrix(order_matrix);
+    
 
     elev_set_motor_direction(DIRN_UP);
 
@@ -24,7 +36,24 @@ int main() {
 		elev_set_motor_direction(DIRN_STOP);
 		int current_floor = elev_get_floor_sensor_signal();
 		}
-
+    
+    //Check if buttons pushed
+        // i = floor
+        // j = button type
+        // er elev_get_button_signal langt nok til at 1ern registeres
+        for (int i = 0; i < N_FLOORS; ++i)
+        {
+            for (int j = 0; j < N_BUTTONS; ++j)
+            {
+                if (elev_get_button_signal(j,i))
+                {
+                    order_matrix[i][j]= 1;
+                }
+            }
+        }
+        
+        
+        
 
 	// Set indicator lights
 	if (elev_get_floor_sensor_signal()!= -1)
