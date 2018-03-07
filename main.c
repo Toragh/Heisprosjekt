@@ -17,15 +17,23 @@ int main()
     
     
     // Initialize engine
-    elev_set_motor_direction(DIRN_UP);
-    if (elev_get_floor_sensor_signal() != -1)
+    while(elev_get_floor_sensor_signal() == -1)
     {
-        elev_set_motor_direction(DIRN_STOP);
+        elev_set_motor_direction(DIRN_UP);
     }
+	elev_set_motor_direction(DIRN_STOP);
     
 
     while (1)
     {
+	if (elev_get_stop_signal())
+	{
+		break;
+	}
+
+
+
+
         // keep current_floor updated
         update_current_floor();		//nok å kjøre denne en gang i løpet av while??
         
@@ -45,7 +53,7 @@ int main()
         }
 
         // Stop elevator if the stop button is pressed
-        if (elev_get_stop_signal())
+        /*if (elev_get_stop_signal())
         {
 		while(elev_get_stop_signal() == 1)
 			{
@@ -53,7 +61,7 @@ int main()
 			}
 		emergency_stop_released();
         }
-	
+	*/
 	//arrive in floor with order
 	if (should_stop_IN_STATE())
 	{
