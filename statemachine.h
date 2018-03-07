@@ -1,5 +1,10 @@
-#ifndef __INCLUDE_IO_H__
-#define __INCLUDE_IO_H__
+#ifndef __INCLUDE_STATE_H__
+#define __INCLUDE_STATE_H__
+#include "elev.h"
+#include "io.h"
+#include "timer.h"
+#include "queue.h"
+#include "channels.h"
 
 typedef enum state
 {
@@ -16,4 +21,4 @@ void emergency_stop(void);
 void emergency_stop_released(void);
 void time_out(void);
 
-#endif // #ifndef __INCLUDE_IO_H__
+#endif // #ifndef __INCLUDE_STATE_H__

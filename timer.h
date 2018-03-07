@@ -1,10 +1,8 @@
-#ifndef __INCLUDE_IO_H__
-#define __INCLUDE_IO_H__
-
-
+#ifndef __INCLUDE_TIMER_H__
+#define __INCLUDE_TIMER_H__
 
 int timer_function_3sec(void);
-int get_timer_function(void)
+int get_timer_function(void);
 
 
-#endif // #ifndef __INCLUDE_IO_H__
+#endif 

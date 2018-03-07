@@ -1,14 +1,15 @@
 #include "statemachine.h"
-#include "io.h"
-#include "timer.h"
-#include "queue.h"
-#include "elev.h"
-#include <stdlib.h>
 
-static Mystate state = IDLE; 
+
+
+#include <stdlib.h>
+#include <stdio.h>
+
+
+static Mystate state = IDLE;
 static int current_dir = DIRN_STOP; 
 static int next_dir;
-static int current_floor = elev_get_floor_sensor_signal();
+int current_floor;     // = elev_get_floor_sensor_signal();
 
 void update_current_floor(void)
 {
@@ -203,7 +204,7 @@ void time_out(void){
 		//door closed
 		elev_set_door_open_lamp(0);
 		//state = IDLE
-		state = IDLE:
+		state = IDLE;
 			break;
 		case (MOVING):
 		//state = MOVING

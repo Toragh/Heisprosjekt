@@ -1,5 +1,5 @@
 # Which compiler to use
-CC = clang
+CC = clang-3.8
 
 # Compiler flags go here.
 CFLAGS = -g -Wall
@@ -8,7 +8,7 @@ CFLAGS = -g -Wall
 LDFLAGS = -lcomedi -lm
 
 # list of sources
-ELEVSRC = elev.c io.c main.c statemachine.c timer.c queue.c
+ELEVSRC = elev.c io.c queue.c timer.c statemachine.c main.c
 
 # program executable file name.
 TARGET = heis
