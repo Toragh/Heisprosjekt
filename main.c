@@ -12,10 +12,7 @@ int main()
         printf("Unable to initialize elevator hardware!\n");
         return 1;
     }
-
-    //printf("Press STOP button to stop elevator and exit program.\n");
-    
-    
+       
     // Initialize engine
     while(elev_get_floor_sensor_signal() == -1)
     {
@@ -32,8 +29,6 @@ int main()
 	}
 
 
-
-
         // keep current_floor updated
         update_current_floor();		//nok å kjøre denne en gang i løpet av while??
         
@@ -45,6 +40,7 @@ int main()
         
         // Update queue					//nok å kjøre denne en gang i løpet av while??
         update_queue();
+	print_queue();
         
         // If there are pending orders run orders_in_queue
         if (check_orders())
@@ -65,7 +61,7 @@ int main()
 	//arrive in floor with order
 	if (should_stop_IN_STATE())
 	{
-		arrive_floor_with_order();
+		arrive_floor_with_order(); 
 	}
 	
 

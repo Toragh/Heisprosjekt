@@ -1,15 +1,12 @@
 #include "statemachine.h"
-
-
-
 #include <stdlib.h>
 #include <stdio.h>
 
 
 static Mystate state = IDLE;
-int current_dir = DIRN_STOP; 
-int next_dir;
-int current_floor;
+static int current_dir = DIRN_STOP; 
+static int next_dir;
+static int current_floor;
 
 
 void update_lights(void)
@@ -42,17 +39,22 @@ void update_current_floor(void)
 	if (elev_get_floor_sensor_signal() != -1)
    	{
         	current_floor = elev_get_floor_sensor_signal();
+		printf("current floor: ", current_floor);
     	}
 }
 
 
 
 
-void orders_in_queue(void){
-	switch(state){
+//Statemachine
+
+void orders_in_queue(void)
+{
+	switch(state)
+	{
 		case (IDLE):
 		//start motor & set direction
-		next_dir = get_next_dir(current_dir);	//RETNING BESTEMMES
+		next_dir = get_next_dir(current_dir, current_floor);
 		current_dir = next_dir;
 		elev_set_motor_direction(current_dir); 		
 		//state = MOVING
@@ -77,8 +79,10 @@ void orders_in_queue(void){
 	}
 }
 
-void arrive_floor_with_order(void){
-	switch(state){
+void arrive_floor_with_order(void)
+{
+	switch(state)
+	{
 		case (IDLE):
 		//delete order
 		delete_item_in_queue(current_floor);
@@ -127,53 +131,57 @@ void arrive_floor_with_order(void){
 
 
 
-void emergency_stop(void){
-	switch(state){
-	case (IDLE):
-	//door open
-	elev_set_door_open_lamp(1);
-	//queue delete
-	clear_queue();
-	//update lights
-	update_lights();
-	//stop light
-	elev_set_stop_lamp(1);
-	//state = EM_STOP
-	state = EM_STOP;
-		break;
+void emergency_stop(void)
+{
+	switch(state)
+	{
+		case (IDLE):
+		//door open
+		elev_set_door_open_lamp(1);
+		//queue delete
+		clear_queue();
+		//update lights
+		update_lights();
+		//stop light
+		elev_set_stop_lamp(1);
+		//state = EM_STOP
+		state = EM_STOP;
+			break;
 
-	case (MOVING):
-	//stop motor
-	elev_set_motor_direction(DIRN_STOP);
-	//queue delete
-	clear_queue();	
-	//update lights
-	update_lights();
-	//stop light
-	elev_set_stop_lamp(1);
-	//state = EM_STOP
-	state = EM_STOP;
-		break;
-	case (DOOR_OPEN):
-	//queue delete
-	clear_queue();	
-	//update lights
-	update_lights();
-	//stop light
-	elev_set_stop_lamp(1);
-	//state = EM_STOP
-	state = EM_STOP;	
-		break;
-	case (EM_STOP):				
-	//state = EM_STOP
-	state = EM_STOP;
-	default:
-		break;
-}
+		case (MOVING):
+		//stop motor
+		elev_set_motor_direction(DIRN_STOP);
+		//queue delete
+		clear_queue();	
+		//update lights
+		update_lights();
+		//stop light
+		elev_set_stop_lamp(1);
+		//state = EM_STOP
+		state = EM_STOP;
+			break;
+		case (DOOR_OPEN):
+		//queue delete
+		clear_queue();	
+		//update lights
+		update_lights();
+		//stop light
+		elev_set_stop_lamp(1);
+		//state = EM_STOP
+		state = EM_STOP;	
+			break;
+		case (EM_STOP):				
+		//state = EM_STOP
+		state = EM_STOP;
+		default:
+			break;
+	}
 }
 
-void emergency_stop_released(void){
-	switch(state){
+void emergency_stop_released(void)
+{
+	switch(state)
+	{
 		case (IDLE):
 		//state = IDLE
 		state = IDLE;
@@ -196,13 +204,15 @@ void emergency_stop_released(void){
 		//else:
 			//state: IDLE
 
-		if(elev_get_floor_sensor_signal() != -1){
+		if(elev_get_floor_sensor_signal() != -1)
+		{
 			elev_set_door_open_lamp(1);
 			//kjør timer
 			set_timer();
 			state = DOOR_OPEN;
 		}
-		else{
+		else
+		{
 			state = IDLE;
 		}
 			
@@ -212,8 +222,10 @@ void emergency_stop_released(void){
 }
 
 
-void time_out(void){
-	switch(state){
+void time_out(void)
+{
+	switch(state)
+	{
 		case (IDLE):
 		//door closed
 		elev_set_door_open_lamp(0);

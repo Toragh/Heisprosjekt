@@ -46,10 +46,11 @@ void clear_queue(void);
 void delete_item_in_queue(int current_floor);
 bool get_order_below(int current_floor);
 bool get_order_above(int current_floor);
-int get_next_dir(int current_dir);
+int get_next_dir(int current_dir, int current_floor);
 bool check_orders(void); // returns false if matrix is empty
 void update_queue(void);
 bool should_stop(int current_floor, int current_dir);
+void print_queue(void);
 
 
 #endif
