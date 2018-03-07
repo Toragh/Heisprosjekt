@@ -4,23 +4,36 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 
-int program_done = 0;
+double get_wall_time(void);
 
-void timer_function_3sec(void){
+//int program_done = 0;
+double timer_end = 0.0;
+
+/*void timer_function_3sec(void)
+{
 	program_done = 0;
-	time_t start = time(NULL);
-	while(time(NULL)-start != 3)
+	double start = get_wall_time();
+	while(get_wall_time() - start <= 3)
 	{
 		program_done = 0;
 	}
 	program_done = 1;
+}*/
+
+int get_timer_function(void){  //is_timer_expired
+	return (get_wall_time() >= timer_end);
 }
 
-int get_timer_function(void){
-	return program_done;
+int set_timer(void){
+	timer_end = get_wall_time() + 3.00;
+	//program_done = 0;
 }
 
-int set_timer_function(void){
-	program_done = 0;
+double get_wall_time(void)
+{
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	return (double)time.tv_sec + (double)time.tv_usec * .000001;
 }

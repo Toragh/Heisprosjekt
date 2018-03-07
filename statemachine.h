@@ -6,6 +6,9 @@
 #include "queue.h"
 #include "channels.h"
 
+bool should_stop_IN_STATE(void);
+void update_lights(void);
+
 typedef enum state
 {
 	IDLE,

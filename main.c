@@ -55,7 +55,7 @@ int main()
         }
 	
 	//arrive in floor with order
-	if (should_stop())
+	if (should_stop_IN_STATE())
 	{
 		arrive_floor_with_order();
 	}
@@ -65,7 +65,6 @@ int main()
 	if(get_timer_function())
 	{
 		time_out();
-		set_timer_function();
 	}
 
 

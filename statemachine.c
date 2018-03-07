@@ -7,16 +7,42 @@
 
 
 static Mystate state = IDLE;
-static int current_dir = DIRN_STOP; 
-static int next_dir;
-int current_floor;     // = elev_get_floor_sensor_signal();
+int current_dir = DIRN_STOP; 
+int next_dir;
+int current_floor;
+
+
+void update_lights(void)
+{
+	if (current_floor == 0)
+	{
+		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
+		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	}
+	else if (current_floor == 3)
+	{
+		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
+		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	}
+	else if (current_floor > 0 && current_floor < 3)
+	{
+		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
+		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
+		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	}
+}
+
+bool should_stop_IN_STATE(void)
+{
+	return should_stop(current_floor, current_dir);
+}
 
 void update_current_floor(void)
 {
 	if (elev_get_floor_sensor_signal() != -1)
-    {
-        current_floor = elev_get_floor_sensor_signal();
-    }
+   	{
+        	current_floor = elev_get_floor_sensor_signal();
+    	}
 }
 
 
@@ -57,12 +83,10 @@ void arrive_floor_with_order(void){
 		//delete order
 		delete_item_in_queue(current_floor);
 		//update lights
-		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+		update_lights();
 		//door open - sett på timer - kjør timerfunksjon
 		elev_set_door_open_lamp(1);
-		timer_function_3sec();
+		set_timer();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;
 			break;
@@ -73,12 +97,10 @@ void arrive_floor_with_order(void){
 		//delete order
 		delete_item_in_queue(current_floor);
 		//update lights
-		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+		update_lights();
 		//door open - sett på timer - kjør timerfunksjon
 		elev_set_door_open_lamp(1);
-		timer_function_3sec();
+		set_timer();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;
 			break;
@@ -87,12 +109,10 @@ void arrive_floor_with_order(void){
 		//delete order
 		delete_item_in_queue(current_floor);
 		//update lights
-		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+		update_lights();
 		//door open - sett på timer
 		elev_set_door_open_lamp(1);
-		timer_function_3sec();
+		set_timer();
 		//state = DOOR_OPEN
 		state = DOOR_OPEN;	
 			break;
@@ -115,9 +135,7 @@ void emergency_stop(void){
 	//queue delete
 	clear_queue();
 	//update lights
-	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-	elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	update_lights();
 	//stop light
 	elev_set_stop_lamp(1);
 	//state = EM_STOP
@@ -130,9 +148,7 @@ void emergency_stop(void){
 	//queue delete
 	clear_queue();	
 	//update lights
-	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-	elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	update_lights();
 	//stop light
 	elev_set_stop_lamp(1);
 	//state = EM_STOP
@@ -142,9 +158,7 @@ void emergency_stop(void){
 	//queue delete
 	clear_queue();	
 	//update lights
-	elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
-	elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
-	elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
+	update_lights();
 	//stop light
 	elev_set_stop_lamp(1);
 	//state = EM_STOP
@@ -185,7 +199,7 @@ void emergency_stop_released(void){
 		if(elev_get_floor_sensor_signal() != -1){
 			elev_set_door_open_lamp(1);
 			//kjør timer
-			timer_function_3sec();
+			set_timer();
 			state = DOOR_OPEN;
 		}
 		else{

@@ -138,26 +138,39 @@ void update_queue(void)
 {
     for (int i = 0; i < N_FLOORS; ++i)
     {
-        for (int j = 0; j < N_BUTTONS; ++j)
-        {
-            if (elev_get_button_signal(j,i))
-            {
-                queue[i][j]= 1;
-            }
+		if( i == 0)
+		{
+			queue[i][0]= elev_get_button_signal(0,i);
+			queue[i][2]= elev_get_button_signal(2,i);
+            		
+		}
+		else if ( i == 3)
+		{
+			queue[i][1]= elev_get_button_signal(1,i);
+			queue[i][2]= elev_get_button_signal(2,i);
+		}
+		else
+		{
+			for (int j = 0; j < N_BUTTONS; ++j)
+        		{
+			queue[i][j]= elev_get_button_signal(j,i);
+            		}
+		}
         }
-    }
 }
 
 
 bool should_stop(int current_floor, int current_dir){	
 	if(current_dir == DIRN_UP)
 	{
-		if(queue[current_floor][0] or queue[current_floor][2])
+		if(queue[current_floor][0] || queue[current_floor][2])
+		{
 			return true;
+		}	
 	}
 	else if(current_dir == DIRN_DOWN)
 	{
-		if(queue[current_floor][1] or queue[current_floor][2])
+		if(queue[current_floor][1] || queue[current_floor][2])
 			return true;
 	}
 	return false;
