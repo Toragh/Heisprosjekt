@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+///////////////////////////////
+//////////STATEMACHINE/////////
+///////////////////////////////
+
+
 static Mystate state = IDLE;
 static int current_dir = DIRN_STOP; 
 static int next_dir;

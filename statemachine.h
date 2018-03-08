@@ -6,6 +6,11 @@
 #include "queue.h"
 #include "channels.h"
 
+///////////////////////////////
+//////////STATEMACHINE/////////
+///////////////////////////////
+
+
 // The elevator can be in 4 different states
 typedef enum state
 {

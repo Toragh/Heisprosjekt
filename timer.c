@@ -4,6 +4,12 @@
 #include <stdio.h>
 #include <sys/time.h>
 
+///////////////////////////////
+//////////////TIMER////////////
+///////////////////////////////
+
+
+
 // Initializes a variable to set in set_timer()
 double timer_end = 0.0;
 

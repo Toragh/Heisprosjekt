@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+///////////////////////////////
+/////MAIN (EVENT HANDLER)//////
+///////////////////////////////
+
 int main()
 {   
     // Initialize hardware

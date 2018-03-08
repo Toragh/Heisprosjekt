@@ -5,6 +5,12 @@
 #include <time.h>
 #include <stdbool.h>
 
+
+///////////////////////////////
+////////////QUEUE//////////////
+///////////////////////////////
+
+
 void clear_queue(void);
 void delete_order(int current_floor);
 bool order_below(int current_floor);
