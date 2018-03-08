@@ -30,7 +30,7 @@ int main()
     while (1)
     {
 	// Prints state to keep track of the code.
-	printf("state: %d ",printState());
+	printf("state: %d \n",printState());
 
         // Keeps current_floor updated
         update_current_floor();	
@@ -50,7 +50,7 @@ int main()
 	// Event: Timer is done. Jumps to function time_out() in statemachine.c
 	if(get_timer_function())
 	{
-		printf("in get_timer_function()");
+		printf("in get_timer_function()\n");
 		time_out();
 	}
         
@@ -65,7 +65,7 @@ int main()
 	//Event: Elevator arrives at floor with order. Jumps to arrive_floor_with_order() in statemachine.c
 	if (should_stop_in_state())
 	{
-		printf("in should stop");
+		printf("Main-should_stop_in_state\n");
 		arrive_floor_with_order(); 
 	}
 	
@@ -85,7 +85,7 @@ int main()
 	{
 		break;
 	}
-	
+	printf("End of while\n\n");
 	
     }
 

@@ -34,7 +34,7 @@ void clear_queue(void)
 // Turns off the lights at the current floor.
 void delete_order(int current_floor)
 {
-    for (int i = 0; i <= N_BUTTONS; i++)
+    for (int i = 0; i < N_BUTTONS; i++)
     {
         queue[current_floor][i] = 0;
     }
@@ -48,7 +48,7 @@ void delete_order(int current_floor)
 		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
 		elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
 	}
-	else if (current_floor > 0 && current_floor < 3)
+	else if ((current_floor > 0) && (current_floor < 3))
 	{
 		elev_set_button_lamp(BUTTON_CALL_UP, current_floor, 0);
 		elev_set_button_lamp(BUTTON_CALL_DOWN, current_floor, 0);
@@ -206,36 +206,40 @@ void update_queue(void)
 
 // Checks if the elevator should stop in the current floor by comparing current direction, current floor and the queue.
 bool should_stop(int current_floor, int current_dir){
-	printf("shouldstop floor %d, currentdir %d",current_floor, current_dir);	
+	printf("Should_stop floor %d, currentdir %d\n",current_floor, current_dir);	
 	if(current_dir == DIRN_UP)
 	{
-		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_COMMAND] || queue[3][BUTTON_CALL_DOWN])
+		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_COMMAND])// || queue[3][BUTTON_CALL_DOWN])
 		{	
-			printf("A");
+			printf("A\n");
 			return true;
 		}	
 	}
 	else if(current_dir == DIRN_DOWN)
 	{	
-		if(queue[current_floor][BUTTON_CALL_DOWN] || queue[current_floor][BUTTON_COMMAND]|| queue[0][BUTTON_CALL_UP])
-			printf("B");			
+		if(queue[current_floor][BUTTON_CALL_DOWN] || queue[current_floor][BUTTON_COMMAND])//|| queue[0][BUTTON_CALL_UP])
+		{
+			printf("B\n");			
 			return true;
+		}
 	}
 	else if(current_dir == DIRN_STOP)
 	{
-		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_CALL_DOWN]|| queue[current_floor][BUTTON_COMMAND])
-			printf("C");
+		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_CALL_DOWN]|| queue[current_floor][BUTTON_COMMAND]){
+			printf("C\n");
 			return true;
+		}
 	}
 	if (current_dir == DIRN_DOWN && queue[current_floor][BUTTON_CALL_UP] && !order_below(current_floor)) {
-			printf("D");		
+			printf("D\n");		
 			return true;
 	}
 	else if (current_dir == DIRN_UP && queue[current_floor][BUTTON_CALL_DOWN] && !order_above(current_floor)) {
 		
-			printf("E");
+			printf("E\n");
 			return true;
 	}
+	printf("Should_stop returns false\n");
 	return false;
 	
 

@@ -51,15 +51,15 @@ void update_lights(void)
 
 bool should_stop_in_state(void)
 {
-	/*
+	
 	if(elev_get_floor_sensor_signal() != -1)
 	{
-		update_current_floor;
+		update_current_floor();
 		return should_stop(current_floor, current_dir);
 	}
 	return false;
-	*/
-	return should_stop(current_floor, current_dir);
+	
+	//return should_stop(current_floor, current_dir);
 
 }
 
@@ -91,15 +91,18 @@ void orders_in_queue(void)
 			break;
 
 		case (MOVING):
+		state = MOVING;
 		printf("2");		
 			break;
 		
 		case (DOOR_OPEN):
+		state = DOOR_OPEN;
 		printf("3");
 			break;
 		
 
-		case (EM_STOP):				
+		case (EM_STOP):	
+		state = EM_STOP;			
 		printf("4");
 		default:
 			break;
@@ -123,8 +126,8 @@ void arrive_floor_with_order(void)
 
 		case (MOVING):
 		//stop motor
-		current_dir = 0;
-		elev_set_motor_direction(current_dir);
+		//current_dir = 0;
+		elev_set_motor_direction(0);
 		//delete order
 		delete_order(current_floor);
 
@@ -136,6 +139,7 @@ void arrive_floor_with_order(void)
 			break;
 
 		case (DOOR_OPEN):
+		elev_set_motor_direction(0);
 		//delete order
 		delete_order(current_floor);
 
@@ -146,7 +150,8 @@ void arrive_floor_with_order(void)
 		printf("7");
 			break;
 
-		case (EM_STOP):				
+		case (EM_STOP):	
+		state = EM_STOP;			
 		printf("8");
 		default:
 			break;
@@ -202,12 +207,15 @@ void emergency_stop_released(void)
 	switch(state)
 	{
 		case (IDLE):
+			state = IDLE;
 			break;
 
 		case (MOVING):
+			state = MOVING;
 			break;
 
-		case (DOOR_OPEN):	
+		case (DOOR_OPEN):
+			state = DOOR_OPEN;	
 			break;
 
 		case (EM_STOP):
@@ -245,6 +253,7 @@ void time_out(void)
 		printf("9");
 			break;
 		case (MOVING):
+		state = MOVING;
 		printf("10");
 			break;
 		case (DOOR_OPEN):
