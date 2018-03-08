@@ -23,7 +23,7 @@ double get_wall_time(void)
 }
 
 // Starts the timer
-int set_timer(void)
+void set_timer(void)
 {
 	timer_end = get_wall_time() + 3.00;
 }

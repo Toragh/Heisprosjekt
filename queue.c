@@ -14,7 +14,7 @@
 
 
 // Initialize queue matrix
-static bool queue[N_FLOORS][N_BUTTONS]= {0};
+static bool queue[N_FLOORS][N_BUTTONS]= {{0}};
 
 
 // Clears queue, fills it with zeros
@@ -205,29 +205,36 @@ void update_queue(void)
 }
 
 // Checks if the elevator should stop in the current floor by comparing current direction, current floor and the queue.
-bool should_stop(int current_floor, int current_dir){	
+bool should_stop(int current_floor, int current_dir){
+	printf("shouldstop floor %d, currentdir %d",current_floor, current_dir);	
 	if(current_dir == DIRN_UP)
 	{
 		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_COMMAND] || queue[3][BUTTON_CALL_DOWN])
-		{
+		{	
+			printf("A");
 			return true;
 		}	
 	}
 	else if(current_dir == DIRN_DOWN)
-	{
+	{	
 		if(queue[current_floor][BUTTON_CALL_DOWN] || queue[current_floor][BUTTON_COMMAND]|| queue[0][BUTTON_CALL_UP])
+			printf("B");			
 			return true;
 	}
 	else if(current_dir == DIRN_STOP)
 	{
 		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_CALL_DOWN]|| queue[current_floor][BUTTON_COMMAND])
+			printf("C");
 			return true;
 	}
-	else if (current_dir == DIRN_DOWN && queue[current_floor][BUTTON_CALL_UP] && !order_below(current_floor)) {
-		return true;
+	if (current_dir == DIRN_DOWN && queue[current_floor][BUTTON_CALL_UP] && !order_below(current_floor)) {
+			printf("D");		
+			return true;
 	}
 	else if (current_dir == DIRN_UP && queue[current_floor][BUTTON_CALL_DOWN] && !order_above(current_floor)) {
-		return true;
+		
+			printf("E");
+			return true;
 	}
 	return false;
 	

@@ -7,7 +7,7 @@
 
 
 double get_wall_time(void);
-int set_timer(void);
+void set_timer(void);
 int get_timer_function(void);
 
 #endif 

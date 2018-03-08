@@ -21,6 +21,7 @@ int main()
     while(elev_get_floor_sensor_signal() == -1)
     {
         elev_set_motor_direction(DIRN_UP);
+	printf("floor: %d\n",elev_get_floor_sensor_signal());
     }
 	elev_set_motor_direction(DIRN_STOP);
 	
@@ -42,14 +43,14 @@ int main()
 	
 	// Keeps queue updated				
         update_queue();
-	print_queue();
-	printf(" ");	
+	print_queue();	
 
 	
 
 	// Event: Timer is done. Jumps to function time_out() in statemachine.c
 	if(get_timer_function())
 	{
+		printf("in get_timer_function()");
 		time_out();
 	}
         
@@ -64,12 +65,13 @@ int main()
 	//Event: Elevator arrives at floor with order. Jumps to arrive_floor_with_order() in statemachine.c
 	if (should_stop_in_state())
 	{
+		printf("in should stop");
 		arrive_floor_with_order(); 
 	}
 	
 	
 	
-	// Event: Stop button is pressed or released. Jumps to eather emergency_stop_pushed() or emergency_stop_released() in statemachine.c
+	// Event: Emergency stop button is pressed or released. Jumps to eather emergency_stop_pushed() or emergency_stop_released() in statemachine.c
         if (elev_get_stop_signal())
         {
 		while(elev_get_stop_signal() == 1)
