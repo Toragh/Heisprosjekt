@@ -11,14 +11,14 @@
 ///////////////////////////////
 
 
-void clear_queue(void);
-void delete_order(int current_floor);
-bool order_below(int current_floor);
-bool order_above(int current_floor);
-int get_next_dir(int current_dir, int current_floor);
-bool check_orders(void); 
-void update_queue(void);
-bool should_stop(int current_floor, int current_dir);
+void queue_delete_all_orders(void);
+void queue_delete_order_at_floor(int current_floor);
+bool queue_order_below(int current_floor);
+bool queue_order_above(int current_floor);
+int queue_get_next_dir(int current_dir, int current_floor);
+bool queue_check_if_orders_exists(void); 
+void queue_update_queue_with_orders(void);
+bool queue_should_stop(int current_floor, int current_dir);
 void print_queue(void);
 
 
