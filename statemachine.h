@@ -22,9 +22,9 @@ typedef enum state
 
 
 
-bool should_stop_in_state(void);
-void lights_off(void);
-void update_lights(void);
+bool state_should_stop(void);
+void state_turn_all_lights_off(void);
+//void update_lights(void);
 void update_current_floor(void);
 void orders_in_queue(void);
 void arrive_floor_with_order(void);

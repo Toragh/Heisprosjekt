@@ -52,7 +52,7 @@ int main()
         }
 
         //Event: Elevator arrives at floor with order. Jumps to arrive_floor_with_order() in statemachine.c
-        if (should_stop_in_state())
+        if (state_should_stop())
         {
             arrive_floor_with_order();
         }
