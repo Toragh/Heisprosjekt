@@ -8,8 +8,6 @@
 //////////////TIMER////////////
 ///////////////////////////////
 
-
-
 // Initializes a variable to set in timer_start_timer()
 double timer_end = 0.0;
 

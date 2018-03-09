@@ -117,8 +117,7 @@ int queue_get_next_dir(int current_dir, int current_floor)
         else
         {
             return DIRN_STOP;
-        }
-        
+        }  
     }
     else
     {
@@ -169,9 +168,7 @@ void queue_update_queue_with_orders(void)
 			{
 				queue[floor][BUTTON_COMMAND]= 1;
 				elev_set_button_lamp(BUTTON_COMMAND, floor, 1);
-			}
-		
-            		
+			}  		
 		}
 		else if (floor == 3)
 		{
@@ -185,21 +182,20 @@ void queue_update_queue_with_orders(void)
 				queue[floor][BUTTON_COMMAND]= 1;
 				elev_set_button_lamp(BUTTON_COMMAND, floor, 1);
 			}
-			
 		}
 		else
 		{
 			for (int button = 0; button < N_BUTTONS; ++button)
-        		{
+        	{
 				if(elev_get_button_signal(button,floor))
 				{
 					queue[floor][button]= 1;
 					elev_set_button_lamp(button, floor, 1);
 				}
 		
-            		}
+            }
 		}
-        }
+    }
 }
 
 // Checks if the elevator should stop in the current floor by comparing current direction, current floor and the queue.
@@ -235,8 +231,6 @@ bool queue_should_stop(int current_floor, int current_dir)
 			return true;
 	}
 	return false;
-	
-
 }
 
 // To track which buttons that are pushed. For debugging.
@@ -252,7 +246,6 @@ void queue_print(void)
 		}
 	}
 	printf("\n");
-
 }
 
 
