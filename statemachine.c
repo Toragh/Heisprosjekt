@@ -30,13 +30,13 @@ bool state_should_stop(void)
 
 	if (elev_get_floor_sensor_signal() != -1)
 	{
-		update_current_floor();
+		state_update_current_floor();
 		return queue_should_stop(current_floor, current_dir);
 	}
 	return false;
 }
 
-void update_current_floor(void)
+void state_update_current_floor(void)
 {
 	if (elev_get_floor_sensor_signal() != -1)
 	{
@@ -45,7 +45,7 @@ void update_current_floor(void)
 }
 
 //Statemachine
-void orders_in_queue(void)
+void state_orders_in_queue(void)
 {
 	switch (state)
 	{
@@ -60,10 +60,19 @@ void orders_in_queue(void)
 		elev_set_motor_direction(next_dir);
 		state = MOVING;
 		break;
+	
+	case (MOVING):
+		break;
+	
+	case(DOOR_OPEN):
+		break;
+	
+	case(EM_STOP):
+		break;
 	}
 }
 
-void arrive_floor_with_order(void)
+void state_arrive_floor_with_order(void)
 {
 	queue_delete_order_at_floor(current_floor);
 	elev_set_door_open_lamp(1);
@@ -76,18 +85,21 @@ void arrive_floor_with_order(void)
 		break;
 
 	case (MOVING):
-		elev_set_motor_direction(0);
+		elev_set_motor_direction(DIRN_STOP);
 		state = DOOR_OPEN;
 		break;
 
 	case (DOOR_OPEN):
-		elev_set_motor_direction(0);
+		elev_set_motor_direction(DIRN_STOP);
 		state = DOOR_OPEN;
+		break;
+	
+	case (EM_STOP):
 		break;
 	}
 }
 
-void emergency_stop_pushed(void)
+void state_emergency_stop_pushed(void)
 {
 	queue_delete_all_orders();
 	state_turn_all_lights_off();
@@ -108,26 +120,26 @@ void emergency_stop_pushed(void)
 	case (DOOR_OPEN):
 		state = EM_STOP;
 		break;
+
+	case (EM_STOP):
+		break;
 	}
 }
 
-void emergency_stop_released(void)
+void state_emergency_stop_released(void)
 {
 	switch (state)
 	{
-	/*	
+		
 	case (IDLE):
-		state = IDLE;
 		break;
 
 	case (MOVING):
-		state = MOVING;
 		break;
 
 	case (DOOR_OPEN):
-		state = DOOR_OPEN;
 		break;
-	*/
+	
 	case (EM_STOP):
 		elev_set_stop_lamp(0);
 		if (elev_get_floor_sensor_signal() != -1)
@@ -143,28 +155,26 @@ void emergency_stop_released(void)
 	}
 }
 
-void time_out(void)
-{
-	elev_set_door_open_lamp(0);
-	state = IDLE;
-	/*
+void state_timer_done(void)
+{	
 	switch (state)
 	{
 	case (IDLE):
+		elev_set_door_open_lamp(0);
+		state = IDLE;
+		break;
+	case (MOVING):
 		state = IDLE;
 		break;
 
 	case (DOOR_OPEN):
+		elev_set_door_open_lamp(0);
 		state = IDLE;
 		break;
 
 	case (EM_STOP):
+		elev_set_door_open_lamp(0);
 		state = IDLE;
 		break;
-	}*/
-}
-
-Mystate printState(void)
-{
-	return state;
+	}
 }

@@ -19,7 +19,7 @@ int queue_get_next_dir(int current_dir, int current_floor);
 bool queue_check_if_orders_exists(void); 
 void queue_update_queue_with_orders(void);
 bool queue_should_stop(int current_floor, int current_dir);
-void print_queue(void);
+void queue_print(void);
 
 
 #endif

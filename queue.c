@@ -20,11 +20,11 @@ static bool queue[N_FLOORS][N_BUTTONS]= {{0}};
 // Clears queue, fills it with zeros
 void queue_delete_all_orders(void)
 {
-    for (int i = 0; i < N_FLOORS;i++)
+    for (int floor = 0; floor < N_FLOORS;floor++)
     {
-        for (int j = 0; j < N_BUTTONS; j++)
+        for (int button = 0; button < N_BUTTONS; button++)
         {
-            queue[i][j] = 0;
+            queue[floor][button] = 0;
         }
     }
     
@@ -34,9 +34,9 @@ void queue_delete_all_orders(void)
 // Turns off the lights at the current floor.
 void queue_delete_order_at_floor(int current_floor)
 {
-    for (int i = 0; i < N_BUTTONS; i++)
+    for (int button = 0; button < N_BUTTONS; button++)
     {
-        queue[current_floor][i] = 0;
+        queue[current_floor][button] = 0;
     }
 	if (current_floor == 0)
 	{
@@ -59,11 +59,11 @@ void queue_delete_order_at_floor(int current_floor)
 // Checks if there are orders below the current floor. Returns true if there is.
 bool queue_order_below(int current_floor)
 {
-    for (int i = 0; i < current_floor; i++)
+    for (int floor = 0; floor < current_floor; floor++)
     {
-        for (int j = 0; j < N_BUTTONS; j++)
+        for (int button = 0; button < N_BUTTONS; button++)
         {
-            if(queue[i][j]== 1)
+            if(queue[floor][button]== 1)
             {
                 return true;
             }
@@ -75,11 +75,11 @@ bool queue_order_below(int current_floor)
 // Checks if there are orders above the current floor. Returns true if there is.
 bool queue_order_above(int current_floor)
 {
-    for (int i = N_FLOORS; i > current_floor; i--)
+    for (int floor = N_FLOORS; floor > current_floor; floor--)
     {
-        for (int j = 0; j < N_BUTTONS; j++)
+        for (int button = 0; button < N_BUTTONS; button++)
         {
-            if(queue[i][j]== 1)
+            if(queue[floor][button]== 1)
             {
                 return true;
             }
@@ -142,11 +142,11 @@ int queue_get_next_dir(int current_dir, int current_floor)
 // Checks if there are order(buttons pushed) at all in the queue.
 bool queue_check_if_orders_exists(void)
 {
-    for (int i = 0; i < N_FLOORS; ++i) 
+    for (int floor = 0; floor < N_FLOORS; ++floor) 
     {
-        for (int j = 0; j < N_BUTTONS; ++j)
+        for (int button = 0; button < N_BUTTONS; ++button)
         {
-            if (queue[i][j] == 1)
+            if (queue[floor][button] == 1)
             {
                 return true;
             }
@@ -158,45 +158,45 @@ bool queue_check_if_orders_exists(void)
 // Iterates through all different types of buttons and fills the queue when buttons are pushed.
 void queue_update_queue_with_orders(void)
 {
-    for (int i = 0; i < N_FLOORS; i++)
+    for (int floor = 0; floor < N_FLOORS; floor++)
     {
-		if(i == 0)
+		if(floor == 0)
 		{	
-			if(elev_get_button_signal(BUTTON_CALL_UP,i))
+			if(elev_get_button_signal(BUTTON_CALL_UP,floor))
 			{
-				queue[i][BUTTON_CALL_UP]= 1;
-				elev_set_button_lamp(BUTTON_CALL_UP, i, 1);
+				queue[floor][BUTTON_CALL_UP]= 1;
+				elev_set_button_lamp(BUTTON_CALL_UP, floor, 1);
 			}
-			if(elev_get_button_signal(BUTTON_COMMAND,i))
+			if(elev_get_button_signal(BUTTON_COMMAND,floor))
 			{
-				queue[i][BUTTON_COMMAND]= 1;
-				elev_set_button_lamp(BUTTON_COMMAND, i, 1);
+				queue[floor][BUTTON_COMMAND]= 1;
+				elev_set_button_lamp(BUTTON_COMMAND, floor, 1);
 			}
 		
             		
 		}
-		else if (i == 3)
+		else if (floor == 3)
 		{
-			if(elev_get_button_signal(BUTTON_CALL_DOWN,i))
+			if(elev_get_button_signal(BUTTON_CALL_DOWN,floor))
 			{
-				queue[i][BUTTON_CALL_DOWN]= 1;
-				elev_set_button_lamp(BUTTON_CALL_DOWN, i, 1);
+				queue[floor][BUTTON_CALL_DOWN]= 1;
+				elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 1);
 			}
-			if(elev_get_button_signal(2,i))
+			if(elev_get_button_signal(2,floor))
 			{
-				queue[i][BUTTON_COMMAND]= 1;
-				elev_set_button_lamp(BUTTON_COMMAND, i, 1);
+				queue[floor][BUTTON_COMMAND]= 1;
+				elev_set_button_lamp(BUTTON_COMMAND, floor, 1);
 			}
 			
 		}
 		else
 		{
-			for (int j = 0; j < N_BUTTONS; ++j)
+			for (int button = 0; button < N_BUTTONS; ++button)
         		{
-				if(elev_get_button_signal(j,i))
+				if(elev_get_button_signal(button,floor))
 				{
-					queue[i][j]= 1;
-					elev_set_button_lamp(j, i, 1);
+					queue[floor][button]= 1;
+					elev_set_button_lamp(button, floor, 1);
 				}
 		
             		}
@@ -205,17 +205,18 @@ void queue_update_queue_with_orders(void)
 }
 
 // Checks if the elevator should stop in the current floor by comparing current direction, current floor and the queue.
-bool queue_should_stop(int current_floor, int current_dir){	
+bool queue_should_stop(int current_floor, int current_dir)
+{	
 	if(current_dir == DIRN_UP)
 	{
-		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_COMMAND])// || queue[3][BUTTON_CALL_DOWN])
+		if(queue[current_floor][BUTTON_CALL_UP] || queue[current_floor][BUTTON_COMMAND])
 		{	
 			return true;
 		}	
 	}
 	else if(current_dir == DIRN_DOWN)
 	{	
-		if(queue[current_floor][BUTTON_CALL_DOWN] || queue[current_floor][BUTTON_COMMAND])//|| queue[0][BUTTON_CALL_UP])
+		if(queue[current_floor][BUTTON_CALL_DOWN] || queue[current_floor][BUTTON_COMMAND])
 		{		
 			return true;
 		}
@@ -240,8 +241,8 @@ bool queue_should_stop(int current_floor, int current_dir){
 
 }
 
-// To track which buttons that are pushed. To find bugs.
-void print_queue(void)
+// To track which buttons that are pushed. For debugging.
+void queue_print(void)
 {
 	printf("\nqueue:");
 	for(int i = 0; i < N_FLOORS; ++i)

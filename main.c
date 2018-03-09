@@ -27,7 +27,7 @@ int main()
     while (1)
     {
         // Keeps current_floor updated
-        update_current_floor();
+        state_update_current_floor();
 
         // Set indicator lights, shows in which floor the elevator cabin is or last was.
         if (elev_get_floor_sensor_signal() != -1)
@@ -37,34 +37,34 @@ int main()
 
         // Keeps queue updated
         queue_update_queue_with_orders();
-        print_queue();
+        queue_print();
 
-        // Event: Timer is done. Jumps to function time_out() in statemachine.c
+        // Event: Timer is done. Jumps to function state_timer_done() in statemachine.c
         if (get_timer_function())
         {
-            time_out();
+            state_timer_done();
         }
 
         // Event: Pending orders, buttons are pushed. Jumps to orders_in_queue() in statemachine.c
         if (queue_check_if_orders_exists())
         {
-            orders_in_queue();
+            state_orders_in_queue();
         }
 
         //Event: Elevator arrives at floor with order. Jumps to arrive_floor_with_order() in statemachine.c
         if (state_should_stop())
         {
-            arrive_floor_with_order();
+            state_arrive_floor_with_order();
         }
 
-        // Event: Emergency stop button is pressed or released. Jumps to eather emergency_stop_pushed() or emergency_stop_released() in statemachine.c
+        // Event: Emergency stop button is pressed or released. Jumps to eather state_emergency_stop_pushed() or state_emergency_stop_released() in statemachine.c
         if (elev_get_stop_signal())
         {
             while (elev_get_stop_signal() == 1)
             {
-                emergency_stop_pushed();
+                state_emergency_stop_pushed();
             }
-            emergency_stop_released();
+            state_emergency_stop_released();
         }
 
         if (elev_get_obstruction_signal())

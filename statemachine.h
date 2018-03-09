@@ -20,17 +20,13 @@ typedef enum state
 	EM_STOP,
 }Mystate;
 
-
-
 bool state_should_stop(void);
 void state_turn_all_lights_off(void);
-//void update_lights(void);
-void update_current_floor(void);
-void orders_in_queue(void);
-void arrive_floor_with_order(void);
-void emergency_stop_pushed(void);
-void emergency_stop_released(void);
-void time_out(void);
-Mystate printState(void);
+void state_update_current_floor(void);
+void state_orders_in_queue(void);
+void state_arrive_floor_with_order(void);
+void state_emergency_stop_pushed(void);
+void state_emergency_stop_released(void);
+void state_timer_done(void);
 
 #endif // #ifndef __INCLUDE_STATE_H__
