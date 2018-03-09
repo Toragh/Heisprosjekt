@@ -40,7 +40,7 @@ int main()
         queue_print();
 
         // Event: Timer is done. Jumps to function state_timer_done() in statemachine.c
-        if (get_timer_function())
+        if (timer_check_timer_done())
         {
             state_timer_done();
         }

@@ -76,7 +76,7 @@ void state_arrive_floor_with_order(void)
 {
 	queue_delete_order_at_floor(current_floor);
 	elev_set_door_open_lamp(1);
-	set_timer();
+	timer_start_timer();
 
 	switch (state)
 	{
@@ -145,7 +145,7 @@ void state_emergency_stop_released(void)
 		if (elev_get_floor_sensor_signal() != -1)
 		{
 			elev_set_door_open_lamp(1);
-			set_timer();
+			timer_start_timer();
 			state = DOOR_OPEN;
 		}
 		else

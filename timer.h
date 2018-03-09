@@ -5,9 +5,8 @@
 //////////////TIMER////////////
 ///////////////////////////////
 
-
-double get_wall_time(void);
-void set_timer(void);
-int get_timer_function(void);
+double timer_get_wall_time(void);
+void timer_start_timer(void);
+int timer_check_timer_done(void);
 
 #endif 

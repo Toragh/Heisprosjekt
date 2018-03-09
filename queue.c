@@ -11,8 +11,6 @@
 ////////////QUEUE//////////////
 ///////////////////////////////
 
-
-
 // Initialize queue matrix
 static bool queue[N_FLOORS][N_BUTTONS]= {{0}};
 
